@@ -1,0 +1,20 @@
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { persistCombineReducers } from "redux-persist";
+import { AsyncStorage } from "react-native";
+import thunk from "redux-thunk";
+import moods from "@redux/moods/reducer";
+
+const reducers = {
+    moods,
+};
+
+export default createStore(
+    persistCombineReducers(
+        {
+            key: "root", storage: AsyncStorage
+        },
+        reducers
+    ),
+    composeWithDevTools(applyMiddleware(thunk))
+)
