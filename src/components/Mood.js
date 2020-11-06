@@ -1,8 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { removeMood } from "@redux/moods/actions";
 
 const Mood = (props) => {
 
+    // const { id, title, mood } = props;
+    console.log('mood ', props.id, props.mood);
     const getColor = (mood) => {
         const colors = ['purple','red','orange','yellow','green'];
         return colors[mood-1];
@@ -13,10 +18,34 @@ const Mood = (props) => {
         return heights[mood-1];
     };
 
+    const _removeMood = (id) => {
+        Alert.alert(
+            "Êtes-vous sûr ?",
+            "Vous être sur le point de supprimer votre Mood.",
+            [
+                {
+                    text: "Annuler",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                },
+                {
+                    text: "Supprimer",
+                    onPress: () => {
+                        console.log('remove id', id);
+                        removeMood(id);
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+    }
+
     return (
-        <View style={[styles.bckground, { backgroundColor: getColor(props.mood), width: getHeight(props.mood)}]}>
+        <TouchableOpacity style={[styles.bckground, { backgroundColor: getColor(props.mood), width: getHeight(props.mood)}]}
+                          onLongPress={() => _removeMood(props.id)}
+        >
             <Text style={styles.text} key={props.id}>{props.title}</Text>
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -40,4 +69,12 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Mood;
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        {
+            removeMood,
+        },
+        dispatch
+    );
+
+export default connect(null, mapDispatchToProps)(Mood);

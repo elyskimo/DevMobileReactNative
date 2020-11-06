@@ -13,10 +13,9 @@ export default function moodsReducer(state = initialState,action) {
         case moodsActions.SET_MOODS:
             return {
                 ...state,
-                moods: [
-                    ...moods,
-                    action.moods
-                ]
+                moods: action.moods,
             };
+        default :
+            return state;
     }
 }

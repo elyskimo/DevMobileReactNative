@@ -10,11 +10,12 @@ const reducers = {
 };
 
 export default createStore(
-    persistCombineReducers(
-        {
-            key: "root", storage: AsyncStorage
-        },
-        reducers
-    ),
-    composeWithDevTools(applyMiddleware(thunk))
-)
+  persistCombineReducers(
+    {
+      key: "root",
+      storage: AsyncStorage,
+    },
+    reducers
+  ),
+  composeWithDevTools(applyMiddleware(thunk))
+);

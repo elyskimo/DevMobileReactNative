@@ -8,31 +8,31 @@ import { AsyncStorage } from "react-native";
 //     // {id:5,mood:1,title:"Mal"},
 // ];
 
-export const getItems = async (key) => {
-    try {
-        const values = await AsyncStorage.getItem(key);
-        return JSON.parse(values);
-
-    } catch (e) {
-        console.log('ERROR STORE.JS getItems- ',e.toString());
-    }
-}
-
-export const setItems = async (key,values) => {
-    try {
-        const values = await AsyncStorage.setItem(key,JSON.stringify(values));
-
-    } catch (e) {
-        console.log('ERROR STORE.JS setItems - ',e.toString());
-    }
-}
-
-export const removeItem = async (key) => {
-    try {
-        await AsyncStorage.removeItem(key);
-        return true;
-    }
-    catch(exception) {
-        return false;
-    }
-}
+// export const getItems = async (key) => {
+//     try {
+//         const values = await AsyncStorage.getItem(key);
+//         return JSON.parse(values);
+//
+//     } catch (e) {
+//         console.log('ERROR STORE.JS getItems- ',e.toString());
+//     }
+// }
+//
+// export const setItems = async (key,values) => {
+//     try {
+//         const values = await AsyncStorage.setItem(key,JSON.stringify(values));
+//
+//     } catch (e) {
+//         console.log('ERROR STORE.JS setItems - ',e.toString());
+//     }
+// }
+//
+// export const removeItem = async (key) => {
+//     try {
+//         await AsyncStorage.removeItem(key);
+//         return true;
+//     }
+//     catch(exception) {
+//         return false;
+//     }
+// }
