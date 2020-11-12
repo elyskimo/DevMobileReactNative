@@ -7,7 +7,6 @@ import { removeMood } from "@redux/moods/actions";
 const Mood = (props) => {
 
     // const { id, title, mood } = props;
-    console.log('mood ', props.id, props.mood);
     const getColor = (mood) => {
         const colors = ['purple','red','orange','yellow','green'];
         return colors[mood-1];
@@ -31,8 +30,7 @@ const Mood = (props) => {
                 {
                     text: "Supprimer",
                     onPress: () => {
-                        console.log('remove id', id);
-                        removeMood(id);
+                        props.removeMood(id);
                     },
                 },
             ],

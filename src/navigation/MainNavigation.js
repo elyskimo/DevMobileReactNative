@@ -1,9 +1,11 @@
 import React from "react";
-import {StatusBar, Text, View, TouchableOpacity, Image, StyleSheet} from "react-native";
+import { StatusBar, Text, View, TouchableOpacity, Image, StyleSheet} from "react-native";
 import { NavigationContainer} from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import List from "@screens/List";
 import Info from "@screens/Info";
 import Profile from "@screens/Profile";
@@ -56,130 +58,134 @@ const TabsNavigation = () => (
     </Tabs.Navigator>
 );
 
-const StackNavigation = () => (
-    <Stack.Navigator initialRouteName="Main">
-        <Stack.Screen
-            name="Main"
-            component={TabsNavigation}
-            options={({ navigation }) => ({
-                headerTitle: null,
-                headerLeft: () => (
-                    <TouchableOpacity
-                        // style={styles.roundButton}
-                        onPress={() => navigation.toggleDrawer()}
-                    >
-                        <Icon name={"bars"}
-                              size={25}
-                              color="#000"
-                              style={{
-                                  marginHorizontal: 10,
-                              }}
-                        />
-                    </TouchableOpacity>
-                ),
-                headerRight: () => (
-                    <Text style={styles.title}>MrMood.</Text>
-                ),
-                headerStyle: {
-                    backgroundColor: '#fff',
-                },
-                headerTintColor: '#000',
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-            })}
-        />
-    </Stack.Navigator>
-);
+const StackNavigation = (props) => {
+    const { user } = props;
+    const colorStatus = user.connected ? 'limegreen' : 'red';
 
-const StackProfileNavigation = () => (
-    <StackProfile.Navigator initialRouteName="Profile">
-        <StackProfile.Screen
-            name="Profile"
-            component={Profile}
-            options={({ navigation }) => ({
-                headerTitle: null,
-                headerLeft: () => (
-                    <TouchableOpacity
-                        // style={styles.roundButton}
-                        onPress={() => navigation.toggleDrawer()}
-                    >
-                        <Icon name={"bars"}
-                              size={25}
-                              color="#000"
-                              style={{
-                                  marginHorizontal: 10,
-                              }}
-                        />
-                    </TouchableOpacity>
-                ),
-                headerRight: () => (
-                    <Text style={styles.title}>MrMood.</Text>
-                ),
-                headerStyle: {
-                    backgroundColor: '#fff',
-                },
-                headerTintColor: '#000',
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-            })}
-        />
-    </StackProfile.Navigator>
-);
+    return (
+        <Stack.Navigator initialRouteName="Main">
+            <Stack.Screen
+                name="Main"
+                component={TabsNavigation}
+                options={({ navigation }) => ({
+                    headerTitle: null,
+                    headerLeft: () => (
+                        <View style={styles.inline}>
+                            <TouchableOpacity
+                                onPress={() => navigation.toggleDrawer()}
+                            >
+                                <Icon name={"user"}
+                                      size={25}
+                                      color="#000"
+                                      style={{
+                                          marginLeft: 10,
+                                      }}
+                                />
+                            </TouchableOpacity>
+                            <Icon name={"circle"}
+                                  size={10}
+                                  color={colorStatus}
+                                  style={{
+                                      marginRight: 5,
+                                  }}
+                            />
+                            <Text style={styles.title}>{user.username}</Text>
 
-const MainNavigation = () => (
-    <NavigationContainer>
-        <StatusBar
-            hidden={false}
-            backgroundColor="transparent"
-            barStyle="dark-content"
-        />
-        <Drawer.Navigator initialRouteName="Home"
-                             // screenOptions={{
-                             //     headerStyle: {
-                             //         backgroundColor: '#f4511e',
-                             //     },
-                             //     headerTintColor: '#fff',
-                             //     headerTitleStyle: {
-                             //         fontWeight: 'bold',
-                             //         alignItems: 'end',
-                             //     },
-                             // }}
-        >
-            <Drawer.Screen
-                name="Home"
-                component={StackNavigation}
+                        </View>
+                    ),
+                    headerRight: () => (
+                        <Text style={styles.title}>MrMood.</Text>
+                    ),
+                    headerStyle: {
+                        backgroundColor: '#fff',
+                    },
+                    headerTintColor: '#000',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    },
+                })}
             />
-            <Drawer.Screen
+        </Stack.Navigator>
+    );
+}
+
+const StackProfileNavigation = (props) => {
+    const { user } = props;
+    const colorStatus = user.connected ? 'limegreen' : 'red';
+
+    return (
+        <StackProfile.Navigator initialRouteName="Profile">
+            <StackProfile.Screen
                 name="Profile"
-                component={StackProfileNavigation}
+                component={Profile}
+                options={({ navigation }) => ({
+                    headerTitle: null,
+                    headerLeft: () => (
+                        <View style={styles.inline}>
+                            <TouchableOpacity
+                                onPress={() => navigation.toggleDrawer()}
+                            >
+                                <Icon name={"user"}
+                                      size={25}
+                                      color="#000"
+                                      style={{
+                                          marginLeft: 10,
+                                      }}
+                                />
+                            </TouchableOpacity>
+                            <Icon name={"circle"}
+                                  size={10}
+                                  color={colorStatus}
+                                  style={{
+                                      marginRight: 5,
+                                  }}
+                            />
+                            <Text style={styles.title}>{user.username}</Text>
+
+                        </View>
+                    ),
+                    headerRight: () => (
+                        <Text style={styles.title}>MrMood.</Text>
+                    ),
+                    headerStyle: {
+                        backgroundColor: '#fff',
+                    },
+                    headerTintColor: '#000',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    },
+                })}
             />
+        </StackProfile.Navigator>
+    );
+}
 
-        </Drawer.Navigator>
-    </NavigationContainer>
-);
+const MainNavigation = (props) => {
+    const { user } = props;
 
-// options={{
-//     headerTitle: null,
-//         headerLeft: (props) => (
-//         <TouchableOpacity
-//             // style={styles.roundButton}
-//             onPress={() => props.navigation.openDrawer()}
-//         >
-//             <Icon name={"bars"}
-//                   size={25}
-//                   color="#fff"
-//                   style={{
-//                       marginHorizontal: 10,
-//                   }}
-//             />
-//         </TouchableOpacity>
-//     ),
-//         headerRight: () => (
-//         <Text>MrMood</Text>
-//     ),
-// }}
+    return (
+        <NavigationContainer>
+            <StatusBar
+                hidden={false}
+                backgroundColor="transparent"
+                barStyle="dark-content"
+            />
+            <Drawer.Navigator initialRouteName="Home">
+                <Drawer.Screen name="Home"
+                    // component={StackNavigation}
+                >
+                    {props => <StackNavigation {...props} user={user} />}
+                </Drawer.Screen>
+                <Drawer.Screen name="Profile"
+                    // component={StackProfileNavigation}
+                >
+                    {props => <StackProfileNavigation {...props} user={user} />}
+                </Drawer.Screen>
+
+            </Drawer.Navigator>
+        </NavigationContainer>
+    );
+}
 
 const styles = StyleSheet.create({
     title: {
@@ -192,6 +198,15 @@ const styles = StyleSheet.create({
         width: 28,
         height: 28,
     },
+    inline: {
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        flexDirection:'row',
+    }
 });
 
-export default MainNavigation;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(MainNavigation);

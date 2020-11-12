@@ -28,8 +28,6 @@ export function removeMood(id) {
     return x.id !== id
   });
 
-  console.log('action', copyMoods);
-
   return async function (dispatch) {
     dispatch(setMoods(copyMoods));
   }

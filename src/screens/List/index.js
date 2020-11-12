@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import {Button, ScrollView, StyleSheet, View, TouchableOpacity, Overlay} from 'react-native';
+import {Button, ScrollView, StyleSheet, View, TouchableOpacity, Overlay, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Mood from "@components/Mood";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { addMood, removeMood } from "@redux/moods/actions";
+import { addMood } from "@redux/moods/actions";
 
 const List = (props) => {
-    const { addMood, moods } = props;
+    const { addMood, moods, user } = props;
     const [displayAdd, setDisplayAdd] = useState(false);
 
     const _addMood = (item) => {
@@ -21,16 +21,24 @@ const List = (props) => {
         {id:4,mood:2,title:"Pas bien",face:":/"},
         {id:5,mood:1,title:"Mal",face:":("}
     ];
-    console.log('mooods',moods);
     // _addMood({id:1,mood:5,title:"Parfait",face:":D"});
     // return false
+
+    if (!user.connected) {
+        return (
+            <View style={styles.wrapper}>
+                <Text>Vous devez être connecté pour utiliser cette fonctionnalité.</Text>
+            </View>
+        );
+    }
+
     return(
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.moods}>
             {
                 moods.map(mood => (
                     <Mood
-                        // key={mood.id.toString()}
+                        key={mood.id.toString()}
                         id={mood.id} mood={mood.mood}
                         title={mood.title}
                     />
@@ -136,7 +144,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    moods: state.moods.moods,
+  moods: state.moods.moods,
+  user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) =>
